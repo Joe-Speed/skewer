@@ -21,9 +21,11 @@ Q3: How amazing was your onboarding experience?
 
 ## Background
 
-Badly worded survey questions produce data that looks trustworthy but is not. The common mistakes are well documented in the survey methodology literature, but the checks for them usually live in textbooks or in the heads of experienced reviewers. skewer turns those checks into a tool you can run on every survey before it goes out, in the same way you would run a linter on code.
+Badly worded survey questions produce data that looks trustworthy but is not. The common mistakes, such as leading phrasing and double-barreled questions, are well documented in the survey methodology literature.
 
-Compared with pasting a survey into an AI chat, a linter has a few practical advantages for this kind of check. It costs nothing per run, so tokens and credits are kept for more complex questions. It gives the same answer every time, it works offline on surveys you may not want to send to a third party, and it is fast enough to run in a script or CI pipeline. AI review still makes sense for judgment calls the heuristics cannot make, which is why an optional AI pass is on the roadmap.
+Tools that check for them already exist inside the big survey platforms. Qualtrics has ExpertReview and SurveyMonkey has Genius, and both flag wording problems in surveys built on their platforms. skewer is not a replacement for those. It is a small, free alternative for everywhere they do not reach: questions still in a document before any platform is involved, surveys built in Google Forms or homegrown tools, and surveys you cannot send to a third-party service.
+
+Because it is a plain command line tool, it also does things a platform feature cannot. It runs offline, it gives the same answer every time, it can check many surveys in a batch, and it fits in a script or CI pipeline. It costs nothing per run, so if you use AI in your workflow, tokens and credits are kept for questions that need actual judgment. Its rules are visible in the source with the reasoning attached, rather than being a score from a black box.
 
 ## Why Rust
 
@@ -31,11 +33,23 @@ Rust is a good fit for linters, and most modern ones (ruff, biome, oxc) are writ
 
 ## Installation
 
-You need a Rust toolchain installed. Then, from a clone of this repository:
+You need the Rust toolchain installed, which provides the `cargo` command used below. If you do not have it, follow the official instructions at https://www.rust-lang.org/tools/install. On macOS and Linux that is one command:
 
 ```sh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+On Windows, download the installer from the same page. You can confirm it worked by running `cargo --version`.
+
+Then clone this repository and install skewer:
+
+```sh
+git clone https://github.com/Joe-Speed/skewer.git
+cd skewer
 cargo install --path .
 ```
+
+After that, `skewer` is available as a command in your terminal.
 
 ## Usage
 

@@ -2,7 +2,7 @@
 name = "skewer"
 version = "0.1.0"
 edition = "2021"
-description = "A linter for survey questions that catches bias and bad practice before your respondents do"
+description = "A command line linter for survey questions. Flags leading phrasing, loaded wording, double-barreled questions and other common problems."
 license = "MIT"
 repository = "https://github.com/Joe-Speed/skewer"
 keywords = ["survey", "linter", "bias", "behavioral-science", "research"]
