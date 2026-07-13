@@ -1,0 +1,8 @@
+# Example survey. Run: skewer examples/survey.txt
+How satisfied are you with our pricing and customer support?
+Don't you think the new dashboard is easier to use?
+How amazing was your onboarding experience?
+Do you always read release notes before updating?
+Do you not feel unhappy with the checkout flow?
+How often do you use the export feature?
+What would make the reports more useful to you?
