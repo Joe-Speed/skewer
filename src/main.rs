@@ -70,10 +70,10 @@ fn run() -> Result<usize, String> {
 
     let flagged = questions.len() - clean_count(&questions, &findings);
     println!(
-        "{} questions checked, {} flagged, {} findings",
-        questions.len(),
+        "{} checked, {} flagged, {}",
+        count_noun(questions.len(), "question"),
         flagged,
-        findings.len()
+        count_noun(findings.len(), "finding")
     );
     Ok(findings.len())
 }
@@ -83,6 +83,14 @@ fn clean_count(questions: &[skewer::Question], findings: &[skewer::Finding]) -> 
         .iter()
         .filter(|q| findings.iter().all(|f| f.question != q.number))
         .count()
+}
+
+fn count_noun(count: usize, noun: &str) -> String {
+    if count == 1 {
+        format!("{count} {noun}")
+    } else {
+        format!("{count} {noun}s")
+    }
 }
 
 fn parse_args() -> Result<(Option<PathBuf>, Option<Format>), String> {

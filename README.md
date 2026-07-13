@@ -19,6 +19,8 @@ Q3: How amazing was your onboarding experience?
 7 questions checked, 5 flagged, 5 findings
 ```
 
+The output above is shortened. A real run lists every flagged question.
+
 ## Background
 
 Badly worded survey questions produce data that looks trustworthy but is not. The common mistakes, such as leading phrasing and double-barreled questions, are well documented in the survey methodology literature.
