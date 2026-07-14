@@ -1,5 +1,10 @@
 # skewer
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Rust](https://img.shields.io/badge/Rust-2021%20edition-orange.svg)](https://www.rust-lang.org/)
+[![CI](https://github.com/Joe-Speed/skewer/actions/workflows/ci.yml/badge.svg)](https://github.com/Joe-Speed/skewer/actions/workflows/ci.yml)
+[![Dependencies](https://img.shields.io/badge/dependencies-2-lightgrey.svg)](Cargo.toml)
+
 skewer is a command line linter for survey questions. It reads a survey and reports questions that are likely to bias your results, such as leading questions, loaded wording, and questions that ask about two things at once. It is written in Rust, compiles to a single binary, and runs offline.
 
 An AI assistant can do these checks too, but they are simple pattern checks that do not need one. Running them locally is free and instant, and the money, credits, and tokens you would have spent can go to work that actually benefits from AI, like interpreting results or designing the study.
@@ -21,17 +26,40 @@ Q3: How amazing was your onboarding experience?
 
 The output above is shortened. A real run lists every flagged question.
 
+## Contents
+
+- [Background](#background)
+- [Repository structure](#repository-structure)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Rules](#rules)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Background
 
 Badly worded survey questions produce data that looks trustworthy but is not. The common mistakes, such as leading phrasing and double-barreled questions, are well documented in the survey methodology literature.
 
 Tools that check for them already exist inside the big survey platforms. Qualtrics has ExpertReview and SurveyMonkey has Genius, and both flag wording problems in surveys built on their platforms. skewer is not a replacement for those. It is a small, free alternative for everywhere they do not reach: questions still in a document before any platform is involved, surveys built in Google Forms or homegrown tools, and surveys you cannot send to a third-party service.
 
-Because it is a plain command line tool, it also does things a platform feature cannot. It runs offline, it gives the same answer every time, it can check many surveys in a batch, and it fits in a script or CI pipeline. It costs nothing per run, so if you use AI in your workflow, tokens and credits are kept for questions that need actual judgment. Its rules are visible in the source with the reasoning attached, rather than being a score from a black box.
+Because it is a plain command line tool, it also does things a platform feature cannot. It runs offline, it gives the same answer every time, it can check many surveys in a batch, and it fits in a script or CI pipeline (see [Usage](#usage) for exit codes). It costs nothing per run, so if you use AI in your workflow, tokens and credits are kept for questions that need actual judgment. Its rules are visible in the source with the reasoning attached, rather than being a score from a black box (see [Rules](#rules)).
 
-## Why Rust
+## Repository structure
 
-Rust is a good fit for linters, and most modern ones (ruff, biome, oxc) are written in it. It compiles to a single self-contained binary, so users install one file rather than a language runtime and a tree of dependencies. It is fast enough that running on every save or in CI is never a cost worth thinking about. Its type system suits this problem well: each rule is an enum variant, and the compiler checks that every rule is handled everywhere it matters. And the same core can later compile to WebAssembly, which makes the planned in-browser demo possible without a server.
+```
+skewer/
+├── src/
+│   ├── lib.rs       core types and the lint entry point
+│   ├── rules.rs     the five checks and their word lists, with tests
+│   ├── input.rs     txt, csv and json parsing, with tests
+│   └── main.rs      the command line shell
+├── examples/        small surveys in each format to try it on
+├── ADDITIONS.md     ideas for contributions, small rules to large projects
+├── Cargo.toml
+├── LICENSE
+└── README.md
+```
 
 ## Installation
 
@@ -77,7 +105,7 @@ The exit code is 0 when no problems are found, 1 when there are findings, and 2 
 
 ## Rules
 
-skewer currently checks for five problems.
+skewer currently checks for five problems. Ideas for further rules are collected in [ADDITIONS.md](ADDITIONS.md).
 
 Double-barreled questions ask about two things at once, for example "How satisfied are you with our pricing and customer support?". A single answer cannot cover both parts, so the data is uninterpretable. skewer flags questions containing "and" or "or".
 
@@ -93,14 +121,14 @@ All of these are deliberate heuristics based on word lists and patterns. They ar
 
 ## Roadmap
 
-Planned work includes checks on response scales (unbalanced options, missing midpoints) for structured formats, Qualtrics QSF import, an optional AI pass for judgment calls the heuristics cannot make, and a WebAssembly build with an in-browser demo.
+Planned work includes checks on response scales (unbalanced options, missing midpoints) for structured formats, Qualtrics QSF import, an optional AI pass for judgment calls the heuristics cannot make, and a WebAssembly build with an in-browser demo. The fuller list, from small rules to larger projects, is in [ADDITIONS.md](ADDITIONS.md).
 
 ## Contributing
 
-New rules are welcome. A rule needs the pattern it detects, a citation to the survey methodology literature explaining why it is a problem, and tests with at least one question it catches and one it correctly passes.
+New rules are welcome. A rule needs the pattern it detects, a citation to the survey methodology literature explaining why it is a problem, and tests with at least one question it catches and one it correctly passes (see the tests in [src/rules.rs](src/rules.rs) for the pattern to follow).
 
-If you want to contribute but are not sure where to start, ADDITIONS.md lists ideas ranging from small rules to larger projects.
+If you want to contribute but are not sure where to start, [ADDITIONS.md](ADDITIONS.md) lists ideas ranging from small rules to larger projects.
 
 ## License
 
-MIT
+Released under the [MIT License](LICENSE).
